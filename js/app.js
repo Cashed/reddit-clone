@@ -1,2 +1,3 @@
+'use strict'
 
-var RedditApp = angular.module('RedditApp', ['ngAnimate']);
+const app = angular.module('RedditApp', ['ngAnimate', 'ngMessages', 'angularMoment']);

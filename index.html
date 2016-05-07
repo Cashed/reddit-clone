@@ -5,12 +5,223 @@
     <title>Reddit Clone</title>
     <link rel='stylesheet' href='css/normalize.css'/>
     <link rel='stylesheet' href='css/bootstrap.css'/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.2/css/font-awesome.min.css"/>
     <link rel='stylesheet' href='css/animate.css'/>
     <link rel='stylesheet' href='css/styles.css'/>
   </head>
   <body>
+    <nav class="navbar navbar-inverse">
+      <div class="container">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="#">Brand</a>
+        </div>
+        <div>
+          <ul class="nav navbar-nav">
+            <li><a  href="#"
+                    ng-click='toggleForm = !toggleForm; formComplete = false'><i class="fa fa-plus" aria-hidden="true" style='width: 10px'></i> Submit</a>
+            </li>
+            <form class="navbar-form navbar-left" role="search">
+              <div class="form-group">
+                <input type="text" class="form-control" placeholder="Search">
+              </div>
+              <button type="submit" class="btn btn-default">Search</button>
+            </form>
+            <li class="dropdown">
+              <a  href="#"
+                  class="dropdown-toggle"
+                  data-toggle="dropdown"
+                  role="button"
+                  aria-haspopup="true"
+                  aria-expanded="false">Sort By: <span class="caret"></span>
+              </a>
+              <ul class="dropdown-menu">
+                <li><a href='#'>Votes</a></li>
+                <li><a href='#'>Date</a></li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <div class="row" ng-controller='SubmitFormController'>
+      <div class='col-md-4 col-md-offset-1'>
+        <form name='submitForm' ng-if='toggleForm' ng-hide='formComplete' ng-submit='submit()' novalidate>
+          <div  class='form-group has-feedback'
+                ng-class='{ "has-error": submitForm.title.$invalid && submitForm.title.$touched,
+                            "has-success": submitForm.title.$valid }'>
+            <label for='title'>Title</label>
+            <input  class='form-control'
+                    type='text'
+                    name='title'
+                    ng-model='form.title'
+                    ng-minlength=3
+                    ng-maxlength=30
+                    required />
+            <span class='form-control-feedback'
+                  ng-show='submitForm.title.$invalid && submitForm.title.$touched'>
+                  <i  class="fa fa-times"
+                      aria-hidden="true"
+                      style='color: red;'></i>
+            </span>
+            <span class='form-control-feedback'
+                  ng-show='submitForm.title.$valid'>
+                  <i  class="fa fa-check"
+                      aria-hidden="true"
+                      style='color: green;'></i>
+            </span>
+            <div class="error" ng-messages="submitForm.title.$error" ng-if="submitForm.title.$touched">
+              <p ng-message="minlength">Title is too short.</p>
+              <p ng-message="maxlength">Title is too long.</p>
+              <p ng-message="required">Title is required.</p>
+            </div>
+          </div>
+          <div  class='form-group has-feedback'
+                ng-class='{ "has-error": submitForm.author.$invalid && submitForm.author.$touched,
+                            "has-success": submitForm.author.$valid }'>
+            <label for='author'>Author</label>
+            <input  class='form-control'
+                    type='text'
+                    name='author'
+                    ng-model='form.author'
+                    ng-minlength=3
+                    ng-maxlength=16
+                    required />
+            <span class='form-control-feedback'
+                  ng-show='submitForm.author.$invalid && submitForm.author.$touched'>
+                  <i  class="fa fa-times"
+                      aria-hidden="true"
+                      style='color: red;'></i>
+            </span>
+            <span class='form-control-feedback'
+                  ng-show='submitForm.author.$valid'>
+                  <i  class="fa fa-check"
+                      aria-hidden="true"
+                      style='color: green;'></i>
+            </span>
+            <div class="error" ng-messages="submitForm.author.$error" ng-if="submitForm.author.$touched">
+              <p ng-message="minlength">Author name is too short.</p>
+              <p ng-message="maxlength">Author name is too long.</p>
+              <p ng-message="required">Author name is required.</p>
+            </div>
+          </div>
+        <div  class='form-group has-feedback'
+              ng-class='{ "has-error": submitForm.img.$invalid && submitForm.img.$touched,
+                          "has-success": submitForm.img.$valid }'>
+          <label for='img'>Image Url</label>
+          <input  class='form-control'
+                  type='url'
+                  name='img'
+                  ng-model='form.img'
+                  required />
+          <span class='form-control-feedback'
+                ng-show='submitForm.img.$invalid && submitForm.img.$touched'>
+                <i  class="fa fa-times"
+                    aria-hidden="true"
+                    style='color: red;'></i>
+          </span>
+          <span class='form-control-feedback'
+                ng-show='submitForm.img.$valid'>
+                <i  class="fa fa-check"
+                    aria-hidden="true"
+                    style='color: green;'></i>
+          </span>
+          <div class="error" ng-messages="submitForm.img.$error" ng-if="submitForm.img.$touched">
+            <p ng-message="type">Must be in url format.</p>
+            <p ng-message="required">Img url is required.</p>
+          </div>
+        </div>
+          <div  class='form-group has-feedback'
+                ng-class='{ "has-error": submitForm.description.$invalid && submitForm.description.$touched,
+                            "has-success": submitForm.description.$valid }'>
+            <label for='description'>Description</label>
+            <textarea  class='form-control'
+                    type='text'
+                    name='description'
+                    ng-model='form.description'
+                    ng-minlength=3
+                    ng-maxlength=450
+                    required>
+            </textarea>
+            <span class='form-control-feedback'
+                  ng-show='submitForm.description.$invalid && submitForm.description.$touched'>
+                  <i  class="fa fa-times"
+                      aria-hidden="true"
+                      style='color: red;'></i>
+            </span>
+            <span class='form-control-feedback'
+                  ng-show='submitForm.description.$valid'>
+                  <i class="fa fa-check"
+                  aria-hidden="true"
+                  style='color: green;'></i>
+            </span>
+            <div class="error" ng-messages="submitForm.description.$error" ng-if="submitForm.description.$touched">
+              <p ng-message="minlength">Description is too short.</p>
+              <p ng-message="maxlength">Description is too long.</p>
+              <p ng-message="required">Description is required.</p>
+            </div>
+          </div>
+          <div class='form-group has-feedback'>
+            <button class='btn btn-primary'
+                    type='submit' ng-disabled='!submitForm.$valid'
+                    ng-click='formComplete = true'>Submit
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class='container' ng-controller='PostController'>
+      <ul ng-repeat='post in posts'>
+        <li>
+          <div class='row'>
+            <div class='col-md-1 postVotes' style='text-align: right;'>
+              <div class='upVote'>
+                <i class="fa fa-arrow-up fa-2x" aria-hidden="true"></i>
+              </div>
+              <div class='voteCount' style='font-size: 14pt;'>
+                14
+              </div>
+              <div class='downVote'>
+                <i class="fa fa-arrow-down fa-2x" aria-hidden="true"></i>
+              </div>
+            </div>
+            <div class='col-md-2 postImage'>
+              <img ng-src='{{post.img}}' width='150px'/>
+            </div>
+            <div class='col-md-8 postTitle'>
+              {{ post.title }}
+              <div class='row'>
+                <div class='col-md-3 col-lg-offset-9 postAuthor'>
+                  Posted by: {{ post.author }}
+              </div>
+              <div class='row'>
+                <div class='col-md-12 postDesc'>
+                  {{ post.description }}
+                </div>
+              </div>
+              <div class='row'>
+                <div class='col-md-3'>
+                  Posted: {{ post.time | amCalendar }}
+                </div>
+                <div class='col-md-2'>
+                  <i class="fa fa-comment" aria-hidden="true"></i>
+                </div>
+                <div class='col-md-2'>
+                  <i class="fa fa-pencil" aria-hidden="true"></i>
+                </div>
+              </div>
+            </div>
+
+        </li>
+      </ul>
+    </div>
     <script src='js/lib/angular.js'></script>
     <script src='js/lib/angular-animate.js'></script>
+    <script src='js/lib/angular-messages.js'></script>
+    <script src='js/lib/moment.js'></script>
+    <script src='js/lib/angular-moment.js'></script>
     <script src='js/app.js'></script>
+    <script src='js/controllers/submit_controller.js'></script>
+    <script src='js/controllers/post_controller.js'></script>
+    <script src='js/services/posts.js'></script>
   </body>
 </html>
