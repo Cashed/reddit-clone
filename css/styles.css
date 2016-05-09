@@ -1,6 +1,6 @@
 body {
   background: black;
-  background-image: url('../background.jpg');
+  background-image: url('../images/background.jpg');
   background-size: cover;
   background-repeat: no-repeat;
   color: white;
@@ -10,6 +10,11 @@ body {
 
 .fa {
   text-shadow: none;
+}
+
+.main {
+  height: 90vh;
+  overflow: scroll;
 }
 
 .postBorder {
@@ -23,6 +28,38 @@ body {
   box-shadow: 7px 7px 3px black;
   box-sizing: border-box;
   padding: 5px;
+}
+
+.commentContent p{
+  color: #7EE1F6;
+  display: inline-block;
+}
+
+.postImage {
+  width: 250px;
+}
+
+.scaleImage img {
+  width: 175px;
+  -webkit-transition: all 1s ease;
+  -moz-transition: all 1s ease;
+  -ms-transition: all 1s ease;
+  transition: all 1s ease;
+}
+
+.scaleImage:hover img{
+  position: absolute;
+  z-index: 1;
+  -webkit-transform:scale(2);
+  -moz-transform:scale(2);
+  -ms-transform:scale(2);
+  -o-transform:scale(2);
+  transform:scale(2);
+}
+
+.commentPic {
+  width: 50px;
+  border: 2px solid white;
 }
 
 .postTitle {
