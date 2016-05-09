@@ -1,3 +1,48 @@
+body {
+  background: black;
+  background-image: url('../background.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
+  color: white;
+  font-family: 'Press Start 2P', sans-serif;
+  text-shadow: 3px 3px 1px black;
+}
+
+.fa {
+  text-shadow: none;
+}
+
+.postBorder {
+  box-sizing: border-box;
+  border: 3px solid white;
+  padding: 15px;
+}
+
+.postContainer {
+  background-color: rgba(30, 30, 30, 0.7);
+  box-shadow: 7px 7px 3px black;
+  box-sizing: border-box;
+  padding: 5px;
+}
+
+.postTitle {
+  font-size: 12pt;
+  text-decoration: underline;
+}
+
+.postAuthor {
+  color: #E45B58;
+  margin-bottom: 15px;
+}
+
+.createComment form {
+  margin: 10px 0;
+}
+
+.createComment button {
+  margin-top: 25px;
+}
+
 .error {
   color: red;
 }
@@ -6,6 +51,21 @@ li {
   list-style: none;
 }
 
+.positive {
+  color: #0CDE0C;
+}
+
+.negative {
+  color: red;
+}
+
+.upVote .fa:hover {
+  color: #0CDE0C;
+}
+
+.downVote .fa:hover {
+  color: red;
+}
 .ng-enter {
   transition:0.2s linear all;
   opacity:0;
