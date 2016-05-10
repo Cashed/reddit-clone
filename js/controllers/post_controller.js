@@ -33,6 +33,7 @@ app.controller('PostController', ['$scope', '$sce', '$q', 'posts',($scope, $sce,
         $scope.postForm.points = 0;
         $scope.postForm.time = new Date();
         $scope.postForm.player_html = $sce.trustAsHtml(oEmbed.html);
+
         posts.addPost($scope.postForm);
         $scope.postForm = {};
       })

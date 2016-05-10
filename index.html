@@ -187,7 +187,7 @@
                     placeholder='optional'
                     />
             <button type='button' class='btn btn-default' ng-click= 'searchSC(postForm.artist)'>Get Songs</button>
-            <select ng-model='postForm.songSelect' style='font-size: 12pt;'>
+            <select ng-model='postForm.songSelect' style='font-size: 12pt; color: black;'>
               <option ng-repeat='track in postForm.tracks' value='{{ track.permalink_url }}'>{{ track.title }}</option>
             </select>
           </div>
