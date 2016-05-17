@@ -5,9 +5,9 @@
     .module('RedditApp')
     .controller('PostController', PostController);
 
-  PostController.$inject = ['$scope', '$sce', '$q', 'posts', 'soundcloud'];
+  PostController.$inject = ['$scope', '$sce', '$q', 'posts', 'soundcloud', '$http'];
 
-  function PostController($scope, $sce, $q, posts, soundcloud) {
+  function PostController($scope, $sce, $q, posts, soundcloud, $http) {
     var vm = this;
     vm.postForm = {};
     vm.postForm.tracks = [];
@@ -17,35 +17,23 @@
     vm.posts = posts.getPosts();
 
     vm.searchSC = function(artist) {
-      return $q(function(resolve, reject) {
-        resolve(soundcloud.searchSC(artist));
-      })
-      .then(function(tracks) {
-        vm.postForm.tracks = tracks;
-      })
-      .catch(function(error) {
-        console.log(error);
-      });
+      soundcloud.searchSC(artist)
+        .then(function(tracks){
+          vm.postForm.tracks = tracks;
+        });
     };
 
-    vm.submitPost = () => {
+    vm.submitPost = function() {
       if (vm.postForm.songSelect) {
-        $q(function(resolve, reject) {
-          SC.oEmbed(vm.postForm.songSelect, { maxheight: 60 }, function(oEmbed) {
-            resolve(oEmbed);
-          });
-        })
-        .then((oEmbed) => {
-          vm.postForm.comments = [];
-          vm.postForm.points = 0;
-          vm.postForm.time = new Date();
-          vm.postForm.player_html = $sce.trustAsHtml(oEmbed.html);
+        soundcloud.getOembed(vm.postForm.songSelect)
+          .then(function(oEmbed) {
+            vm.postForm.comments = [];
+            vm.postForm.points = 0;
+            vm.postForm.time = new Date();
+            vm.postForm.player_html = $sce.trustAsHtml(oEmbed.html);
 
-          posts.addPost(vm.postForm);
-          vm.postForm = {};
-        })
-        .catch((error) => {
-          console.log(error);
+            posts.addPost(vm.postForm);
+            vm.postForm = {};
         });
       }
       else {

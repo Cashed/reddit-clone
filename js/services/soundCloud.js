@@ -5,16 +5,40 @@
     .module('RedditApp')
     .factory('soundcloud', soundcloud);
 
-  soundcloud.$inject = ['$http'];
+  soundcloud.$inject = ['$q'];
 
-  function soundcloud($http) {
+  function soundcloud($q) {
     var searchSC = function(artist) {
-      return $http.get(`https://api.soundcloud.com/users/${artist}/tracks?client_id=7b9c5b47c81e949b866695aaee59f001`, { limit: 5 }).then(function(tracks) {
-        return tracks.data;
+      return $q(function(resolve, reject) {
+        SC.get(`/users/${artist}/tracks`, { limit: 5 }, function(tracks) {
+          resolve(tracks);
+        });
+      })
+      .then(function(tracks) {
+        return tracks;
+      })
+      .catch(function(error) {
+        console.log(error);
       });
     }
+
+    var getOembed = function(trackLink) {
+      return $q(function(resolve, reject) {
+        SC.oEmbed(trackLink, { maxheight: 60 }, function(oEmbed) {
+          resolve(oEmbed);
+        });
+      })
+      .then(function(oEmbed) {
+        return oEmbed;
+      })
+      .catch(function(error) {
+        console.log(error);
+      });
+    }
+
     return {
-      searchSC: searchSC
+      searchSC: searchSC,
+      getOembed: getOembed
     }
   }
 
