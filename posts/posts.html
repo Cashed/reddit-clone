@@ -1,0 +1,183 @@
+<div class='col-md-12 postBorder'>
+  <div class='row'>
+    <div class='col-md-8 col-md-offset-2 soundtrack' style='margin-bottom: 15px;'>
+      <div ng-bind-html='post.player_html'></div>
+    </div>
+  </div>
+  <div class='row'>
+    <div class='col-md-1 postVotes' style='text-align: center;'>
+      <div class='upVote'>
+        <a href='#' ng-click='vm.increasePoints(post)'>
+          <i class="fa fa-arrow-up fa-2x" aria-hidden="true"></i>
+        </a>
+      </div>
+      <div  class='voteCount'
+            style='font-size: 14pt;'
+            ng-class='{ positive: post.points > 0, negative: post.points < 0 }'>
+        {{ post.points }}
+      </div>
+      <div class='downVote'>
+        <a href='#' ng-click='vm.decreasePoints(post)'>
+          <i class="fa fa-arrow-down fa-2x" aria-hidden="true"></i>
+        </a>
+      </div>
+    </div>
+    <div class='col-md-2 postImage'>
+      <div class='scaleImage'>
+        <img ng-src='{{ post.img }}'/>
+      </div>
+    </div>
+    <div class='col-md-8 postContent'>
+      <div class='col-md-8 postTitle'>
+        {{ post.title }}
+      </div>
+      <div class='row'>
+        <div class='col-md-4 col-md-offset-8 postAuthor'>
+          By: {{ post.author }}
+        </div>
+      </div>
+      <div class='row'>
+        <div class='col-md-12 postDesc'>
+          {{ post.description }}
+        </div>
+      </div>
+      <div class='row' style='margin-top: 15px;'>
+        <div class='col-md-5' style='color: yellow'>
+          {{ post.time | amCalendar }}
+        </div>
+        <div class='col-md-3'>
+          <a href='#' ng-click='toggleComments = !toggleComments'>
+            <p  ng-pluralize
+                count='post.comments.length'
+                when="{ '1': '{} Comment ',
+                        'other': '{} Comments ' }"
+                display='inline-block'></p>
+          </a>
+        </div>
+        <div class='col-md-4'>
+          <a href='#' ng-click='toggleCommentForm = !toggleCommentForm; isComplete = false'>
+            <span>Add Comment </span>
+            <i class="fa fa-pencil" aria-hidden="true"></i>
+          </a>
+        </div>
+      </div>
+      <div  class='row commentContent'
+            ng-if='toggleComments'>
+        <div ng-repeat='comment in post.comments'>
+          <img class='commentPic' ng-src='{{ comment.img }}'/>
+          <p>{{ comment.name }}: <span> {{ comment.comment }}</span></p>
+        </div>
+      </div>
+      <!-- //////////////////////////////
+                new comment form
+      ///////////////////////////// -->
+      <div  class='row createComment'
+            ng-if='toggleCommentForm'
+            ng-hide='isComplete'>
+        <form name='commentForm'
+              ng-submit='vm.submitComment(post)'
+              novalidate>
+          <div  class='has-feedback'
+                ng-class='{ "has-error": commentForm.name.$invalid && commentForm.name.$touched,
+                            "has-success": commentForm.name.$valid }'
+                style='display: inline-block;'>
+            <label for='name'>Name</label>
+            <input  type='text'
+                    class='form-control'
+                    name='name'
+                    ng-model='vm.comment.name'
+                    ng-minlength=3
+                    ng-maxlength=12
+                    required />
+            <span class='form-control-feedback'
+                  ng-show='commentForm.name.$invalid && commentForm.name.$touched'>
+                  <i  class="fa fa-times"
+                      aria-hidden="true"
+                      style='color: red;'></i>
+            </span>
+            <span class='form-control-feedback'
+                  ng-show='commentForm.name.$valid'>
+                  <i class="fa fa-check"
+                  aria-hidden="true"
+                  style='color: green;'></i>
+            </span>
+            <div  class="error"
+                  ng-messages="commentForm.name.$error"
+                  ng-if="commentForm.name.$touched"
+                  style='position: absolute'>
+              <p ng-message="minlength">Name is too short.</p>
+              <p ng-message="maxlength">Name is too long.</p>
+              <p ng-message="required">Name is required.</p>
+            </div>
+          </div>
+          <div  class='has-feedback'
+                style='display: inline-block;'
+                ng-class='{ "has-error": commentForm.img.$invalid && commentForm.img.$touched,
+                            "has-success": commentForm.img.$valid }'>
+            <label for='img'>Portrait Url</label>
+            <input  class='form-control'
+                    type='url'
+                    name='img'
+                    ng-model='vm.comment.img'
+                    required />
+            <span class='form-control-feedback'
+                  ng-show='commentForm.img.$invalid && commentForm.img.$touched'>
+                  <i  class="fa fa-times"
+                      aria-hidden="true"
+                      style='color: red;'></i>
+            </span>
+            <span class='form-control-feedback'
+                  ng-show='commentForm.img.$valid'>
+                  <i  class="fa fa-check"
+                      aria-hidden="true"
+                      style='color: green;'></i>
+            </span>
+            <div  class="error"
+                  style="position: absolute;"
+                  ng-messages="commentForm.img.$error"
+                  ng-if="commentForm.img.$touched">
+              <p ng-message="required">Portrait url is required.</p>
+            </div>
+          </div>
+          <div class='has-feedback'
+               style='margin-top: 15px;'
+               ng-class='{ "has-error": commentForm.comment.$invalid && commentForm.comment.$touched,
+                           "has-success": commentForm.comment.$valid }'>
+            <label for='comment'>Comment</label>
+            <input  type='text'
+                    class='form-control'
+                    name='comment'
+                    ng-model='vm.comment.comment'
+                    ng-minlength=3
+                    ng-maxlength=50
+                    required />
+            <span class='form-control-feedback'
+                  ng-show='commentForm.comment.$invalid && commentForm.comment.$touched'>
+                  <i  class="fa fa-times"
+                      aria-hidden="true"
+                      style='color: red;'></i>
+            </span>
+            <span class='form-control-feedback'
+                  ng-show='commentForm.comment.$valid'>
+                  <i class="fa fa-check"
+                  aria-hidden="true"
+                  style='color: green;'></i>
+            </span>
+            <div  class="error"
+                  ng-messages="commentForm.comment.$error"
+                  ng-if="commentForm.comment.$touched"
+                  style='position: absolute;'>
+              <p ng-message="minlength">Comment is too short.</p>
+              <p ng-message="maxlength">Comment is too long.</p>
+              <p ng-message="required">Comment is required.</p>
+            </div>
+          </div>
+          <button class='btn btn-primary'
+                  type='submit'
+                  ng-click='isComplete = true'
+                  ng-disabled='commentForm.$invalid'>Submit</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
