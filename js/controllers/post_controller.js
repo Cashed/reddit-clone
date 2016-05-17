@@ -9,11 +9,8 @@
 
   function PostController($scope, $sce, $q, posts, soundcloud) {
     var vm = this;
-    // vm.postForm = {};
-    // vm.postForm.tracks = [];
-    // vm.comment = {};
-    vm.sortBy = '-points';
 
+    vm.sortBy = '-points';
     vm.posts = posts.getPosts();
 
     vm.searchSC = function(artist) {
