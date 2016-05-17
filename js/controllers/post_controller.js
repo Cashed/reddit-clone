@@ -5,9 +5,9 @@
     .module('RedditApp')
     .controller('PostController', PostController);
 
-  PostController.$inject = ['$scope', '$sce', '$q', 'posts', 'soundcloud', '$http'];
+  PostController.$inject = ['$scope', '$sce', '$q', 'posts', 'soundcloud'];
 
-  function PostController($scope, $sce, $q, posts, soundcloud, $http) {
+  function PostController($scope, $sce, $q, posts, soundcloud) {
     var vm = this;
     vm.postForm = {};
     vm.postForm.tracks = [];

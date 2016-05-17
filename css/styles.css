@@ -13,7 +13,7 @@ body {
 }
 
 .main {
-  height: calc(100% - 80px);
+  height: calc(100% - 50px);
   overflow: scroll;
 }
 
@@ -30,6 +30,12 @@ body {
   padding: 5px;
 }
 
+@media (max-width: 1200px) {
+  .postContent {
+    margin-left: 190px;
+  }
+}
+
 .commentContent p{
   color: #7EE1F6;
   display: inline-block;
@@ -41,6 +47,8 @@ body {
 
 .scaleImage img {
   width: 175px;
+  z-index: 1;
+  position: absolute;
   -webkit-transition: all 1s ease;
   -moz-transition: all 1s ease;
   -ms-transition: all 1s ease;
