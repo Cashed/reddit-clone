@@ -9,9 +9,9 @@
 
   function PostController($scope, $sce, $q, posts, soundcloud) {
     var vm = this;
-    vm.postForm = {};
-    vm.postForm.tracks = [];
-    vm.comment = {};
+    // vm.postForm = {};
+    // vm.postForm.tracks = [];
+    // vm.comment = {};
     vm.sortBy = '-points';
 
     vm.posts = posts.getPosts();
@@ -20,7 +20,7 @@
       soundcloud.searchSC(artist)
         .then(function(tracks){
           vm.postForm.tracks = tracks;
-        });
+      });
     };
 
     vm.submitPost = function() {

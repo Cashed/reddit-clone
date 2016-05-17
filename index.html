@@ -308,7 +308,7 @@
                       <input  type='text'
                               class='form-control'
                               name='name'
-                              ng-model='comment.name'
+                              ng-model='vm.comment.name'
                               ng-minlength=3
                               ng-maxlength=12
                               required />
@@ -341,7 +341,7 @@
                       <input  class='form-control'
                               type='url'
                               name='img'
-                              ng-model='comment.img'
+                              ng-model='vm.comment.img'
                               required />
                       <span class='form-control-feedback'
                             ng-show='commentForm.img.$invalid && commentForm.img.$touched'>
@@ -370,7 +370,7 @@
                       <input  type='text'
                               class='form-control'
                               name='comment'
-                              ng-model='comment.comment'
+                              ng-model='vm.comment.comment'
                               ng-minlength=3
                               ng-maxlength=50
                               required />

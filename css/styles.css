@@ -13,7 +13,8 @@ body {
 }
 
 .main {
-  height: calc(100% - 50px);
+  /*height: calc(100% - 50px);*/
+  height: 95vh;
   overflow: scroll;
 }
 
