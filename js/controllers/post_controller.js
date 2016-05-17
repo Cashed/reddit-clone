@@ -1,71 +1,80 @@
-'use strict'
+(function() {
+  'use strict';
 
-app.controller('PostController', ['$scope', '$sce', '$q', 'posts',($scope, $sce, $q, posts) => {
-  $scope.postForm = {};
-  $scope.postForm.tracks = [];
-  $scope.comment = {};
-  $scope.sortBy = '-points';
+  angular
+    .module('RedditApp')
+    .controller('PostController', PostController);
 
-  $scope.posts = posts.getPosts();
+  PostController.$inject = ['$scope', '$sce', '$q', 'posts', 'soundcloud'];
 
-  $scope.searchSC = (artist) => {
-    $q((resolve, reject) => {
-      SC.get(`/users/${artist}/tracks`, { limit:5, height:"60px" }, (tracks) => {
-        resolve(tracks);
-      });
-    })
-    .then((tracks) => {
-      $scope.postForm.tracks = tracks;
-    })
-    .catch((error) => {
-      console.log(error);
-    });
-  };
-  $scope.submitPost = () => {
-    if ($scope.postForm.songSelect) {
-      $q((resolve, reject) => {
-        SC.oEmbed($scope.postForm.songSelect, { maxheight: 60 }, (oEmbed) => {
-          resolve(oEmbed);
-        });
+  function PostController($scope, $sce, $q, posts, soundcloud) {
+    var vm = this;
+    vm.postForm = {};
+    vm.postForm.tracks = [];
+    vm.comment = {};
+    vm.sortBy = '-points';
+
+    vm.posts = posts.getPosts();
+
+    vm.searchSC = function(artist) {
+      return $q(function(resolve, reject) {
+        resolve(soundcloud.searchSC(artist));
       })
-      .then((oEmbed) => {
-        $scope.postForm.comments = [];
-        $scope.postForm.points = 0;
-        $scope.postForm.time = new Date();
-        $scope.postForm.player_html = $sce.trustAsHtml(oEmbed.html);
-
-        posts.addPost($scope.postForm);
-        $scope.postForm = {};
+      .then(function(tracks) {
+        vm.postForm.tracks = tracks;
       })
-      .catch((error) => {
+      .catch(function(error) {
         console.log(error);
       });
-    }
-    else {
-      $scope.postForm.comments = [];
-      $scope.postForm.points = 0;
-      $scope.postForm.time = new Date();
+    };
 
-      posts.addPost($scope.postForm);
-      $scope.postForm = {};
-    }
-  };
+    vm.submitPost = () => {
+      if (vm.postForm.songSelect) {
+        $q(function(resolve, reject) {
+          SC.oEmbed(vm.postForm.songSelect, { maxheight: 60 }, function(oEmbed) {
+            resolve(oEmbed);
+          });
+        })
+        .then((oEmbed) => {
+          vm.postForm.comments = [];
+          vm.postForm.points = 0;
+          vm.postForm.time = new Date();
+          vm.postForm.player_html = $sce.trustAsHtml(oEmbed.html);
 
-  $scope.submitComment = (post) => {
-    post.comments.push($scope.comment);
-    $scope.comment = {};
-  };
+          posts.addPost(vm.postForm);
+          vm.postForm = {};
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+      }
+      else {
+        vm.postForm.comments = [];
+        vm.postForm.points = 0;
+        vm.postForm.time = new Date();
 
-  $scope.increasePoints = (post) => {
-    post.points += 1;
-  };
+        posts.addPost(vm.postForm);
+        vm.postForm = {};
+      }
+    };
 
-  $scope.decreasePoints = (post) => {
-    post.points -= 1;
-  };
+    vm.submitComment = (post) => {
+      post.comments.push(vm.comment);
+      vm.comment = {};
+    };
 
-  $scope.sortOrder = (sort) => {
-    $scope.sortBy = sort;
-  };
+    vm.increasePoints = (post) => {
+      post.points += 1;
+    };
 
-}]);
+    vm.decreasePoints = (post) => {
+      post.points -= 1;
+    };
+
+    vm.sortOrder = (sort) => {
+      vm.sortBy = sort;
+    };
+
+  }
+
+})();

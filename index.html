@@ -3,14 +3,20 @@
   <head>
     <meta charset="utf-8">
     <title>Reddit Clone</title>
+
+    <!-- bootstrap and styles -->
     <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.3/jquery.min.js'></script>
-    <script src="http://connect.soundcloud.com/sdk.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
     <link rel='stylesheet' href='css/normalize.css'/>
     <link rel='stylesheet' href='css/bootstrap.css'/>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.2/css/font-awesome.min.css"/>
     <link href='https://fonts.googleapis.com/css?family=Press+Start+2P' rel='stylesheet' type='text/css'>
     <link rel='stylesheet' href='css/styles.css'/>
+
+    <!-- soundCloud API -->
+    <script src="http://connect.soundcloud.com/sdk.js"></script>
+
+    <!-- angular files -->
     <script src='js/lib/angular.js'></script>
     <script src='js/lib/angular-messages.js'></script>
     <script src='js/lib/angular-animate.js'></script>
@@ -20,8 +26,12 @@
     <script src='js/app.js'></script>
     <script src='js/controllers/post_controller.js'></script>
     <script src='js/services/posts.js'></script>
+    <script src='js/services/soundcloud.js'></script>
   </head>
-  <body ng-controller='PostController'>
+  <body ng-controller='PostController as vm'>
+    <!-- //////////////////////////////
+              navbar
+    ///////////////////////////// -->
     <nav class="navbar navbar-inverse">
       <div class="container">
         <div class="navbar-header">
@@ -47,22 +57,25 @@
                   aria-expanded="false">Sort By: <span class="caret"></span>
               </a>
               <ul class="dropdown-menu" style='text-shadow: none;'>
-                <li ng-click='sortOrder("points")'><a href='#'>Votes</a></li>
-                <li ng-click='sortOrder("time")'><a href='#'>Date</a></li>
-                <li ng-click='sortOrder("title")'><a href='#'>Title</a></li>
+                <li ng-click='vm.sortOrder("-points")'><a href='#'>Votes</a></li>
+                <li ng-click='vm.sortOrder("time")'><a href='#'>Date</a></li>
+                <li ng-click='vm.sortOrder("title")'><a href='#'>Title</a></li>
               </ul>
             </li>
           </ul>
         </div>
       </div>
     </nav>
+    <!-- //////////////////////////////
+            new post form
+    ///////////////////////////// -->
     <div class="row">
       <div class='col-md-4 col-md-offset-1'>
         <form   class='postSubmitForm'
                 name='submitForm'
                 ng-if='toggleForm'
                 ng-hide='formComplete'
-                ng-submit='submitPost()'
+                ng-submit='vm.submitPost()'
                 novalidate>
           <div  class='form-group has-feedback'
                 ng-class='{ "has-error": submitForm.title.$invalid && submitForm.title.$touched,
@@ -71,7 +84,7 @@
             <input  class='form-control'
                     type='text'
                     name='title'
-                    ng-model='postForm.title'
+                    ng-model='vm.postForm.title'
                     ng-minlength=3
                     ng-maxlength=30
                     required />
@@ -100,7 +113,7 @@
             <input  class='form-control'
                     type='text'
                     name='author'
-                    ng-model='postForm.author'
+                    ng-model='vm.postForm.author'
                     ng-minlength=3
                     ng-maxlength=16
                     required />
@@ -129,7 +142,7 @@
           <input  class='form-control'
                   type='url'
                   name='img'
-                  ng-model='postForm.img'
+                  ng-model='vm.postForm.img'
                   required />
           <span class='form-control-feedback'
                 ng-show='submitForm.img.$invalid && submitForm.img.$touched'>
@@ -155,7 +168,7 @@
             <textarea  class='form-control'
                     type='text'
                     name='description'
-                    ng-model='postForm.description'
+                    ng-model='vm.postForm.description'
                     ng-minlength=3
                     ng-maxlength=450
                     required>
@@ -183,12 +196,12 @@
             <input  class='form-control songSearch'
                     type='text'
                     name='artist'
-                    ng-model='postForm.artist'
+                    ng-model='vm.postForm.artist'
                     placeholder='optional'
                     />
-            <button type='button' class='btn btn-default' ng-click= 'searchSC(postForm.artist)'>Get Songs</button>
-            <select ng-model='postForm.songSelect' style='font-size: 12pt; color: black;'>
-              <option ng-repeat='track in postForm.tracks' value='{{ track.permalink_url }}'>{{ track.title }}</option>
+            <button type='button' class='btn btn-default' ng-click= 'vm.searchSC(vm.postForm.artist)'>Get Songs</button>
+            <select ng-model='vm.postForm.songSelect' style='font-size: 12pt; color: black;'>
+              <option ng-repeat='track in vm.postForm.tracks' value='{{ track.permalink_url }}'>{{ track.title }}</option>
             </select>
           </div>
           <div class='form-group has-feedback'>
@@ -202,8 +215,11 @@
       <div class='col-md-4 trackList'>
       </div>
     </div>
+    <!-- //////////////////////////////
+              posts
+    ///////////////////////////// -->
     <div class='container main'>
-      <ul ng-repeat='post in posts | filter:searchText | orderBy:sortBy'>
+      <ul ng-repeat='post in vm.posts | filter:searchText | orderBy:vm.sortBy'>
         <li class='row postContainer'>
           <div class='col-md-12 postBorder'>
             <div class='row'>
@@ -214,7 +230,7 @@
             <div class='row'>
               <div class='col-md-1 postVotes' style='text-align: center;'>
                 <div class='upVote'>
-                  <a href='#' ng-click='increasePoints(post)'>
+                  <a href='#' ng-click='vm.increasePoints(post)'>
                     <i class="fa fa-arrow-up fa-2x" aria-hidden="true"></i>
                   </a>
                 </div>
@@ -224,7 +240,7 @@
                   {{ post.points }}
                 </div>
                 <div class='downVote'>
-                  <a href='#' ng-click='decreasePoints(post)'>
+                  <a href='#' ng-click='vm.decreasePoints(post)'>
                     <i class="fa fa-arrow-down fa-2x" aria-hidden="true"></i>
                   </a>
                 </div>
@@ -275,11 +291,14 @@
                     <p>{{ comment.name }}: <span> {{ comment.comment }}</span></p>
                   </div>
                 </div>
+                <!-- //////////////////////////////
+                          new comment form
+                ///////////////////////////// -->
                 <div  class='row createComment'
                       ng-if='toggleCommentForm'
                       ng-hide='isComplete'>
                   <form name='commentForm'
-                        ng-submit='submitComment(post)'
+                        ng-submit='vm.submitComment(post)'
                         novalidate>
                     <div  class='has-feedback'
                           ng-class='{ "has-error": commentForm.name.$invalid && commentForm.name.$touched,
