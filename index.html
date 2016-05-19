@@ -17,19 +17,19 @@
     <script src="http://connect.soundcloud.com/sdk.js"></script>
 
     <!-- angular files/dependencies -->
-    <script src='js/lib/angular.js'></script>
-    <script src='js/lib/angular-messages.js'></script>
-    <script src='js/lib/angular-animate.js'></script>
-    <script src='js/lib/moment.js'></script>
-    <script src='js/lib/angular-moment.js'></script>
-    <script src='js/lib/angular-sanitize.js'></script>
+    <script src='app/js/lib/angular.js'></script>
+    <script src='app/js/lib/angular-messages.js'></script>
+    <script src='app/js/lib/angular-animate.js'></script>
+    <script src='app/js/lib/moment.js'></script>
+    <script src='app/js/lib/angular-moment.js'></script>
+    <script src='app/js/lib/angular-sanitize.js'></script>
 
     <!-- angular build -->
-    <script src='js/app.js'></script>
-    <script src='posts/post_controller.js'></script>
-    <script src='posts/post_service.js'></script>
-    <script src='js/services/soundcloud.js'></script>
-    <script src='posts/post_directive.js'></script>
+    <script src='app/app.js'></script>
+    <script src='app/posts/post_controller.js'></script>
+    <script src='app/posts/post_service.js'></script>
+    <script src='app/js/services/soundcloud.js'></script>
+    <script src='app/posts/post_directive.js'></script>
   </head>
   <body ng-controller='PostController as vm'>
     <!-- //////////////////////////////
@@ -226,7 +226,12 @@
     <div class='container main'>
       <ul>
         <li ng-repeat='post in vm.posts | filter:searchText | orderBy:vm.sortBy' class='row postContainer'>
-          <user-post post='post'></user-post>
+          <user-post post='post'>
+            <!-- //////////////////////////////
+                      new comment form
+            ///////////////////////////// -->
+            <comment-form post='post'></comment-form>
+          </user-post>
         </li>
       </ul>
     </div>

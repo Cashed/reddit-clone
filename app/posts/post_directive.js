@@ -12,9 +12,8 @@
         post: '='
       },
       replace: true,
-      templateUrl: 'posts/posts.html',
+      templateUrl: 'app/posts/posts.html',
       controller: function($scope) {
-        console.log($scope.post);
       }
     }
   }

@@ -1,0 +1,107 @@
+<div  class='row createComment'
+      ng-if='toggleCommentForm'
+      ng-hide='isComplete'>
+  <form name='commentForm'
+        ng-submit='vm.submitComment(post)'
+        novalidate>
+    <div  class='has-feedback'
+          ng-class='{ "has-error": commentForm.name.$invalid && commentForm.name.$touched,
+                      "has-success": commentForm.name.$valid }'
+          style='display: inline-block;'>
+      <label for='name'>Name</label>
+      <input  type='text'
+              class='form-control'
+              name='name'
+              ng-model='vm.comment.name'
+              ng-minlength=3
+              ng-maxlength=12
+              required />
+      <span class='form-control-feedback'
+            ng-show='commentForm.name.$invalid && commentForm.name.$touched'>
+            <i  class="fa fa-times"
+                aria-hidden="true"
+                style='color: red;'></i>
+      </span>
+      <span class='form-control-feedback'
+            ng-show='commentForm.name.$valid'>
+            <i class="fa fa-check"
+            aria-hidden="true"
+            style='color: green;'></i>
+      </span>
+      <div  class="error"
+            ng-messages="commentForm.name.$error"
+            ng-if="commentForm.name.$touched"
+            style='position: absolute'>
+        <p ng-message="minlength">Name is too short.</p>
+        <p ng-message="maxlength">Name is too long.</p>
+        <p ng-message="required">Name is required.</p>
+      </div>
+    </div>
+    <div  class='has-feedback'
+          style='display: inline-block;'
+          ng-class='{ "has-error": commentForm.img.$invalid && commentForm.img.$touched,
+                      "has-success": commentForm.img.$valid }'>
+      <label for='img'>Portrait Url</label>
+      <input  class='form-control'
+              type='url'
+              name='img'
+              ng-model='vm.comment.img'
+              required />
+      <span class='form-control-feedback'
+            ng-show='commentForm.img.$invalid && commentForm.img.$touched'>
+            <i  class="fa fa-times"
+                aria-hidden="true"
+                style='color: red;'></i>
+      </span>
+      <span class='form-control-feedback'
+            ng-show='commentForm.img.$valid'>
+            <i  class="fa fa-check"
+                aria-hidden="true"
+                style='color: green;'></i>
+      </span>
+      <div  class="error"
+            style="position: absolute;"
+            ng-messages="commentForm.img.$error"
+            ng-if="commentForm.img.$touched">
+        <p ng-message="required">Portrait url is required.</p>
+      </div>
+    </div>
+    <div class='has-feedback'
+         style='margin-top: 15px;'
+         ng-class='{ "has-error": commentForm.comment.$invalid && commentForm.comment.$touched,
+                     "has-success": commentForm.comment.$valid }'>
+      <label for='comment'>Comment</label>
+      <input  type='text'
+              class='form-control'
+              name='comment'
+              ng-model='vm.comment.comment'
+              ng-minlength=3
+              ng-maxlength=50
+              required />
+      <span class='form-control-feedback'
+            ng-show='commentForm.comment.$invalid && commentForm.comment.$touched'>
+            <i  class="fa fa-times"
+                aria-hidden="true"
+                style='color: red;'></i>
+      </span>
+      <span class='form-control-feedback'
+            ng-show='commentForm.comment.$valid'>
+            <i class="fa fa-check"
+            aria-hidden="true"
+            style='color: green;'></i>
+      </span>
+      <div  class="error"
+            ng-messages="commentForm.comment.$error"
+            ng-if="commentForm.comment.$touched"
+            style='position: absolute;'>
+        <p ng-message="minlength">Comment is too short.</p>
+        <p ng-message="maxlength">Comment is too long.</p>
+        <p ng-message="required">Comment is required.</p>
+      </div>
+    </div>
+    <button class='btn btn-primary'
+            type='submit'
+            ng-click='isComplete = true'
+            ng-disabled='commentForm.$invalid'>Submit</button>
+  </form>
+</div>
