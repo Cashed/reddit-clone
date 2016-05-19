@@ -7,10 +7,13 @@
 
   angular
     .module('RedditApp', [
+      // angular
       'ngAnimate',
       'ngMessages',
       'angularMoment',
-      'ngSanitize'
+      'ngSanitize',
+      // custom
+      'userPost'
     ]
   );
 })();
